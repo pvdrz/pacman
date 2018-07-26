@@ -1,3 +1,4 @@
+#[derive(Clone, Debug, PartialEq)]
 pub enum Direction {
     North,
     South,
@@ -60,5 +61,15 @@ impl Direction {
             Direction::West => (-speed, 0),
             Direction::Stop => (0, 0),
         }
+    }
+
+    pub fn values() -> Vec<Self> {
+        vec![
+            Direction::North,
+            Direction::South,
+            Direction::East,
+            Direction::West,
+            Direction::Stop,
+        ]
     }
 }
