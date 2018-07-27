@@ -135,6 +135,12 @@ impl GameState {
         self.agent_states.get_mut(index)
     }
 
+    pub fn agent_position(&self, index: usize) -> Option<(usize, usize)> {
+        self.agent_states
+            .get(index)
+            .map(|agent| agent.config().position())
+    }
+
     pub fn num_agents(&self) -> usize {
         self.agent_states.len()
     }
