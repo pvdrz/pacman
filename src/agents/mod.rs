@@ -44,9 +44,9 @@ impl Agent for GreedyAgent {
         actions.remove_item(&Direction::Stop);
         let scores = actions
             .iter()
-            .filter_map(|action| {
+            .filter_map(|&action| {
                 state
-                    .gen_successor(self.index, action.clone())
+                    .gen_successor(self.index, action)
                     .map(|succ| (action, succ.score()))
                     .ok()
             })

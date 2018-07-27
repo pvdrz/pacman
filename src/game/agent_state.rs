@@ -11,7 +11,7 @@ pub struct AgentState {
 impl AgentState {
     pub fn new(start: Configuration, is_pacman: bool) -> Self {
         AgentState {
-            start: start.clone(),
+            start: start,
             configuration: start,
             is_pacman,
             scared_timer: 0,
@@ -40,6 +40,6 @@ impl AgentState {
 
     pub fn reset(&mut self) {
         self.scared_timer = 0;
-        self.configuration = self.start.clone();
+        self.configuration = self.start;
     }
 }

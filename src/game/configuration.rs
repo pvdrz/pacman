@@ -1,6 +1,6 @@
 use game::Direction;
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
 pub struct Configuration {
     x: usize,
     y: usize,
@@ -14,11 +14,9 @@ impl Configuration {
 
     pub fn gen_successor(&self, dx: isize, dy: isize) -> Self {
         match Direction::from_diff(dx, dy) {
-            Direction::Stop => Configuration::new(
-                self.x + dx as usize,
-                self.y + dy as usize,
-                self.direction.clone(),
-            ),
+            Direction::Stop => {
+                Configuration::new(self.x + dx as usize, self.y + dy as usize, self.direction)
+            }
             direction => Configuration::new(
                 (self.x as isize + dx) as usize,
                 (self.y as isize + dy) as usize,
@@ -32,6 +30,6 @@ impl Configuration {
     }
 
     pub fn direction(&self) -> Direction {
-        self.direction.clone()
+        self.direction
     }
 }
