@@ -9,9 +9,9 @@ fn main() {
     let mut game = GameBuilder::new()
         .load_file("layouts/small_classic.lay")
         .engine(Text::new(400))
-        .pacman(GreedyAgent::new(0))
-        .ghost(RandomAgent::new(1))
-        .ghost(RandomAgent::new(2))
+        .pacman(GreedyAgent)
+        .ghost(RandomAgent)
+        .ghost(RandomAgent)
         .finish()
         .unwrap();
 

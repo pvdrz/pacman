@@ -32,7 +32,7 @@ impl<'a, E: Engine> Game<'a, E> {
             if index == 0 {
                 self.engine.update(&self.state);
             }
-            let action = agent.get_action(&self.state);
+            let action = agent.get_action(&self.state, index);
             self.state = self.state.gen_successor(index, action)?;
         }
         self.engine.update(&self.state);
