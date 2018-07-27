@@ -178,6 +178,14 @@ impl GameState {
     }
 
     pub fn game_over(&self) -> bool {
-        self.win || self.lose
+        if self.win {
+            println!("Pacman won! Score: {}", self.score);
+            true
+        } else if self.lose {
+            println!("Pacman lost! Score: {}", self.score);
+            true
+        } else {
+            false
+        }
     }
 }
