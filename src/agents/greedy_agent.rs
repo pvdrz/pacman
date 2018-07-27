@@ -8,7 +8,7 @@ use rand::Rng;
 pub struct GreedyAgent;
 
 impl Agent for GreedyAgent {
-    fn get_action(&self, state: &GameState, index: usize) -> Direction {
+    fn get_action(&mut self, state: &GameState, index: usize) -> Direction {
         let mut actions = state.legal_actions(index);
         actions.remove_item(&Direction::Stop);
 

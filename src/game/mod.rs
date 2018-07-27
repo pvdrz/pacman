@@ -25,15 +25,16 @@ pub struct Game<'a, E: Engine> {
 
 impl<'a, E: Engine> Game<'a, E> {
     pub fn run(&mut self) -> Result<(), Error> {
-        let mut agents = self.agents.iter().enumerate().cycle();
-
+        let mut index = 0;
         while !self.state.game_over() {
-            let (index, agent) = agents.next().unwrap();
-            if index == 0 {
+            if index == self.state.num_agents() {
+                index = 0;
                 self.engine.update(&self.state);
             }
+            let agent = self.agents.get_mut(index).unwrap();
             let action = agent.get_action(&self.state, index);
             self.state = self.state.gen_successor(index, action)?;
+            index += 1;
         }
         self.engine.update(&self.state);
         Ok(())

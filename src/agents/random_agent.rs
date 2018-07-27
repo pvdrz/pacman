@@ -7,7 +7,7 @@ use rand::Rng;
 pub struct RandomAgent;
 
 impl Agent for RandomAgent {
-    fn get_action(&self, state: &GameState, index: usize) -> Direction {
+    fn get_action(&mut self, state: &GameState, index: usize) -> Direction {
         let actions = state.legal_actions(index);
         let action = thread_rng().choose(&actions).unwrap_or(&Direction::Stop);
         *action

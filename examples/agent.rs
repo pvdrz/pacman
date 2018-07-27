@@ -12,7 +12,7 @@ use pacman::util::manhattan_distance as distance;
 struct ChaserGhost;
 
 impl Agent for ChaserGhost {
-    fn get_action(&self, state: &GameState, index: usize) -> Direction {
+    fn get_action(&mut self, state: &GameState, index: usize) -> Direction {
         let pacman_position = state.agent_position(0).unwrap();
         let actions = state.legal_actions(index);
 
