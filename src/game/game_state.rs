@@ -100,11 +100,7 @@ impl GameState {
                 rules::pacman::apply_action(&mut state, action);
                 state.score += rules::ghost::check_death(&mut state, index);
                 state.score -= 1;
-                let (x, y) = state
-                    .agent_state(0)
-                    .ok_or(err_msg("Invalid index"))?
-                    .config()
-                    .position();
+                let (x, y) = state.agent_position(0).ok_or(err_msg("Invalid index"))?;
                 if state.has_food(x, y) {
                     state.food.set(x, y, false);
                     state.score += 10;

@@ -31,17 +31,13 @@ pub fn check_death(state: &mut GameState, index: usize) -> isize {
 
     if index == 0 {
         for ghost_index in 1..state.num_agents() {
-            let ghost_position = state
-                .agent_state_mut(ghost_index)
-                .unwrap()
-                .config()
-                .position();
+            let ghost_position = state.agent_position(ghost_index).unwrap();
             if pacman_position == ghost_position {
                 score_change += collide(state, ghost_index);
             }
         }
     } else {
-        let ghost_position = state.agent_state_mut(index).unwrap().config().position();
+        let ghost_position = state.agent_position(index).unwrap();
         if pacman_position == ghost_position {
             score_change += collide(state, index);
         }

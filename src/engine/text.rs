@@ -19,9 +19,9 @@ impl Engine for Text {
         let (width, height) = state.walls().shape();
 
         let capsules = state.capsules();
-        let pacman = state.agent_state(0).unwrap().config().position();
+        let pacman = state.agent_position(0).unwrap();
         let ghosts = (1..state.num_agents())
-            .map(|index| state.agent_state(index).unwrap().config().position())
+            .map(|index| state.agent_position(index).unwrap())
             .collect::<Vec<_>>();
 
         let mut buffer = format!("\nScore: {}\n", state.score());
