@@ -81,11 +81,13 @@ impl GameState {
         })
     }
 
-    pub fn legal_actions(&self, index: usize) -> Result<Vec<Direction>, Error> {
+    pub fn legal_actions(&self, index: usize) -> Vec<Direction> {
         if index == 0 {
             rules::pacman::legal_actions(&self)
-        } else {
+        } else if index < self.num_agents() {
             rules::ghost::legal_actions(&self, index)
+        } else {
+            Vec::new()
         }
     }
 
@@ -95,8 +97,8 @@ impl GameState {
         } else {
             let mut state: GameState = self.clone();
             if index == 0 {
-                rules::pacman::apply_action(&mut state, action)?;
-                state.score += rules::ghost::check_death(&mut state, index)?;
+                rules::pacman::apply_action(&mut state, action);
+                state.score += rules::ghost::check_death(&mut state, index);
                 state.score -= 1;
                 let (x, y) = state
                     .agent_state(0)
@@ -114,15 +116,12 @@ impl GameState {
                 if state.capsules().contains(&(x, y)) {
                     state.capsules.remove_item(&(x, y));
                     for ghost_index in 1..state.num_agents() {
-                        state
-                            .agent_state_mut(ghost_index)
-                            .ok_or(err_msg("Invalid index"))?
-                            .scare(40);
+                        state.agent_state_mut(ghost_index).unwrap().scare(40);
                     }
                 }
             } else {
-                rules::ghost::apply_action(&mut state, action, index)?;
-                state.score += rules::ghost::check_death(&mut state, index)?;
+                rules::ghost::apply_action(&mut state, action, index);
+                state.score += rules::ghost::check_death(&mut state, index);
             }
             Ok(state)
         }

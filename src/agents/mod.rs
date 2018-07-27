@@ -15,7 +15,7 @@ impl RandomAgent {
 
 impl Agent for RandomAgent {
     fn get_action(&self, state: &GameState) -> Direction {
-        let actions = state.legal_actions(self.index).unwrap();
+        let actions = state.legal_actions(self.index);
         let action = thread_rng()
             .choose(&actions)
             .cloned()
@@ -40,30 +40,27 @@ impl GreedyAgent {
 
 impl Agent for GreedyAgent {
     fn get_action(&self, state: &GameState) -> Direction {
-        if let Ok(mut actions) = state.legal_actions(self.index) {
-            actions.remove_item(&Direction::Stop);
-            let scores = actions
+        let mut actions = state.legal_actions(self.index);
+        actions.remove_item(&Direction::Stop);
+        let scores = actions
+            .iter()
+            .filter_map(|action| {
+                state
+                    .gen_successor(self.index, action.clone())
+                    .map(|succ| (action, succ.score()))
+                    .ok()
+            })
+            .collect::<Vec<_>>();
+        if let Some(max_score) = scores.iter().map(|(_, s)| s).max() {
+            let best_actions = scores
                 .iter()
-                .filter_map(|action| {
-                    state
-                        .gen_successor(self.index, action.clone())
-                        .map(|succ| (action, succ.score()))
-                        .ok()
-                })
-                .collect::<Vec<_>>();
-            if let Some(max_score) = scores.iter().map(|(_, s)| s).max() {
-                let best_actions = scores
-                    .iter()
-                    .filter(|(_, s)| s == max_score)
-                    .map(|(a, _)| a.clone().clone())
-                    .collect::<Vec<Direction>>();
-                thread_rng()
-                    .choose(&best_actions)
-                    .cloned()
-                    .unwrap_or(Direction::Stop)
-            } else {
-                Direction::Stop
-            }
+                .filter(|(_, s)| s == max_score)
+                .map(|(a, _)| a.clone().clone())
+                .collect::<Vec<Direction>>();
+            thread_rng()
+                .choose(&best_actions)
+                .cloned()
+                .unwrap_or(Direction::Stop)
         } else {
             Direction::Stop
         }

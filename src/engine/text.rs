@@ -29,10 +29,10 @@ impl Engine for Text {
         for y in 0..height {
             let mut line = Vec::new();
             for x in 0..width {
-                if pacman == (x, y) {
-                    line.push(b'P');
-                } else if ghosts.contains(&(x, y)) {
+                if ghosts.contains(&(x, y)) {
                     line.push(b'G');
+                } else if pacman == (x, y) {
+                    line.push(b'P');
                 } else if state.has_food(x, y) {
                     line.push(b'.');
                 } else if state.has_wall(x, y) {
