@@ -50,8 +50,8 @@ impl GameState {
         for (y, line) in buffer.lines().enumerate() {
             for (x, chr) in line.chars().enumerate() {
                 match chr {
-                    '%' => walls.insert(x, y, true),
-                    '.' => food.insert(x, y, true),
+                    '%' => walls.set(x, y, true),
+                    '.' => food.set(x, y, true),
                     'o' => capsules.push((x, y)),
                     'P' => {
                         let start = Configuration::new(x, y, Direction::Stop);
@@ -108,7 +108,7 @@ impl GameState {
                 if state.has_food(x, y) {
                     state.food.set(x, y, false);
                     state.score += 10;
-                    if self.num_food() == 0 && !self.lose {
+                    if state.num_food() == 0 && !self.lose {
                         state.score += 500;
                         state.win = true;
                     }
